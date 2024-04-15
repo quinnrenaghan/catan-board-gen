@@ -1,31 +1,31 @@
-import Util
+import BoardUtility as bu
 
-N = 2
-hex_set = set()
-for q in range(-N, N + 1):
-    for r in range(-N, N + 1):
-        for s in range(-N, N + 1):
-            if q + r + s == 0:
-                hex_set.add(Util.Hex(q, r, s))
+tile_dict = dict()
+vertex_list = list()
 
-vertex_set = set()
-for curr_hex in hex_set:
-    for pair in Util.pairs:
-        vertex_hexes = set()
-        vertex_hexes.add(curr_hex)
-        d1, d2 = pair
 
-        if Util.valid_hex(2, Util.hex_neighbor(curr_hex, d1)):
-            vertex_hexes.add(Util.hex_neighbor(curr_hex, d1))
+def setup_board():
+    n = 2
+    for q in range(-n, n + 1):
+        for r in range(-n, n + 1):
+            for s in range(-n, n + 1):
+                if q + r + s == 0:
+                    tile_dict[(q, r, s)] = bu.Tile((q, r, s), bu.Material.BRICK, bu.Number.SIX)
 
-        if Util.valid_hex(2, Util.hex_neighbor(curr_hex, d2)):
-            vertex_hexes.add(Util.hex_neighbor(curr_hex, d2))
+    for curr_tile in tile_dict.values():
+        curr_coords = curr_tile.coords
+        for pair in bu.pairs:
+            vertex_coords = set()
+            vertex_coords.add(curr_coords)
+            d1, d2 = pair
 
-        current_vertex = Util.Vertex(frozenset(vertex_hexes))
+            if bu.valid_coords(2, bu.get_neighbor_coords(curr_coords, d1)):
+                vertex_coords.add(bu.get_neighbor_coords(curr_coords, d1))
 
-        if len(vertex_hexes) == 1 and current_vertex in vertex_set:
-            vertex_hexes.add("double water")
-            current_vertex = Util.Vertex(frozenset(vertex_hexes))
+            if bu.valid_coords(2, bu.get_neighbor_coords(curr_coords, d2)):
+                vertex_coords.add(bu.get_neighbor_coords(curr_coords, d2))
 
-        if current_vertex not in vertex_set:
-            vertex_set.add(current_vertex)
+            current_vertex = bu.Vertex(frozenset(vertex_coords))
+
+            if current_vertex not in vertex_list or len(current_vertex.tile_coords) == 1:
+                vertex_list.append(current_vertex)
