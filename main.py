@@ -1,8 +1,9 @@
 import Board_Utility as util
 import time
-seed = time.time() % 1000
+board = set()
 
-first_board = util.Board(seed)
 
-for value in first_board.tile_dict.values():
-    print(f"\n{value}")
+for i in range(1000):
+    seed = time.time() % 10000 + i
+    board.add(util.Board(seed))
+

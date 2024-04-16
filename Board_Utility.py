@@ -87,7 +87,7 @@ def init_vertices(seed):
             if valid_coords(2, get_neighbor_coords(coords, d2)):
                 vertex_coords.add(get_neighbor_coords(coords, d2))
 
-            current_vertex = Vertex(frozenset(vertex_coords))
+            current_vertex = Vertex(vertex_coords)
 
             if current_vertex not in vertex_list or len(current_vertex.tile_coords) == 1:
                 vertex_list.append(current_vertex)
@@ -116,22 +116,21 @@ def init_tiles(seed):
         else:
             number = random.sample(numbers, 1)[0]
             numbers.remove(number)
-        tile_dict[(coords[0], coords[1], coords[2])] = Tile((coords[0], coords[1], coords[2]), material, number)
+        tile_dict[(coords[0], coords[1], coords[2])] = Tile(material, number)
     return tile_dict
 
 
 class Tile:
-    def __init__(self, coords, material, number):
-        self.coords = coords
+    def __init__(self, material, number):
         self.material = material
         self.number = number
 
     def __str__(self):
-        return f"Tile:\n  Board Coordinates: {self.coords}\n  Material: {self.material}\n  Number: {self.number}"
+        return f"Tile:\n Material: {self.material}\n  Number: {self.number}"
 
     def __eq__(self, other):
         if isinstance(other, Tile):
-            return self.coords == other.coords and self.material == other.material and self.number == other.number
+            return self.material == other.material and self.number == other.number
         return False
 
 
@@ -152,7 +151,6 @@ class Vertex:
 class Board:
     N = 2
     coords_set = set()
-    vertex_list = list()
 
     for q in range(-N, N + 1):
         for r in range(-N, N + 1):
