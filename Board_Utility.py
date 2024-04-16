@@ -112,7 +112,7 @@ def init_tiles(seed):
         material = random.sample(materials, 1)[0]
         materials.remove(material)
         if material == material.DESERT:
-            number = 7
+            number = Number.SEVEN
         else:
             number = random.sample(numbers, 1)[0]
             numbers.remove(number)
@@ -126,7 +126,7 @@ class Tile:
         self.number = number
 
     def __str__(self):
-        return f"Tile:\n Material: {self.material}\n  Number: {self.number}"
+        return f"{self.material}:{self.number.value[0]}"
 
     def __eq__(self, other):
         if isinstance(other, Tile):
@@ -161,3 +161,18 @@ class Board:
     def __init__(self, seed):
         self.tile_dict = init_tiles(seed)
         self.vertex_list = init_vertices(seed)
+
+    def __str__(self):
+        sorted_items = sorted(self.tile_dict.items(), key=lambda x: (x[0][1], x[0][0]))
+        pattern = [3, 4, 5, 4, 3]
+        big_string = ""
+        idx = 0
+        for num_items in pattern:
+            small_string = ""
+            for i in range(num_items):
+                small_string += " " + str(sorted_items[idx][1])
+                idx = idx + 1
+            big_string += small_string.center(40)
+            big_string += "\n"
+        return big_string
+
