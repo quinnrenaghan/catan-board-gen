@@ -146,11 +146,12 @@ def init_vertices():
                 ports.remove(port)
                 vertex_dict[edge_vertex_counter].tile_coords.append(port)
 
-                if edge_vertex_counter == 53:
-                    edge_vertex_counter = 23
+                edge_vertex_counter += 1
+                if edge_vertex_counter == 54:
+                    edge_vertex_counter = 24
 
-                vertex_dict[edge_vertex_counter + 1].tile_coords.append(port)
-                edge_vertex_counter += 2
+                vertex_dict[edge_vertex_counter].tile_coords.append(port)
+                edge_vertex_counter += 1
             else:
                 edge_vertex_counter += 1
 
