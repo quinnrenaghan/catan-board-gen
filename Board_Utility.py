@@ -65,36 +65,38 @@ def distance(a, b):
     return coord_length(coords_sub(a, b))
 
 
-def valid_coords(max_range, coord):
-    if -max_range <= coord[0] <= max_range and -max_range <= coord[1] <= max_range and -max_range <= coord[
-        2] <= max_range:
-        return True
-    else:
-        return False
-
-
 def init_vertices(seed):
-    vertex_list = list()
-    for coords in Board.coords_set:
-        for pair in pairs:
-            vertex_coords = set()
-            vertex_coords.add(coords)
-            d1, d2 = pair
+    vertex_dict = dict()
+    vertex_dict[0] = Vertex(0, [(0, 0, 0), (0, -1, 1), (1, -1, 0)], (5, 6, 1))
+    vertex_dict[1] = Vertex(1, [(0, 0, 0), (1, -1, 0), (1, 0, -1)], (2, 0, 9))
+    vertex_dict[2] = Vertex(2, [(0, 1, -1), (0, 0, 0), (1, 0, -1)], (3, 1, 12))
+    vertex_dict[3] = Vertex(3, [(-1, 1, 0), (0, 0, 0), (0, 1, -1)], (15, 4, 2))
+    vertex_dict[4] = Vertex(4, [(-1, 1, 0), (-1, 0, 1), (0, 0, 0)], (18, 5, 3))
 
-            if valid_coords(2, get_neighbor_coords(coords, d1)):
-                vertex_coords.add(get_neighbor_coords(coords, d1))
+    vertex_dict[5] = Vertex(5, [(-1, 0, 1), (0, -1, 1), (0, 0, 0)], (4, 21, 0))
+    vertex_dict[6] = Vertex(6, [(0, -1, 1), (1, -2, 1), (1, -1, 0)], (0, 23, 7))
+    vertex_dict[7] = Vertex(7, [(1, -1, 0), (1, -2, 1), (2, -2, 0)], (6, 25, 8))
+    vertex_dict[8] = Vertex(8, [(1, -1, 0), (2, -2, 0), (2, -1, -1)], (9, 7, 28))
+    vertex_dict[9] = Vertex(9, [(1, 0, -1), (1, -1, 0), (2, -1, -1)], (1, 8, 10))
 
-            if valid_coords(2, get_neighbor_coords(coords, d2)):
-                vertex_coords.add(get_neighbor_coords(coords, d2))
+    vertex_dict[10] = Vertex(10, [(1, 0, -1), (2, -1, -1), (2, 0, -2)], (11, 9, 30))
+    vertex_dict[11] = Vertex(11, [(1, 1, -2), (1, 0, -1), (2, 0, -2)], (12, 10, 33))
+    vertex_dict[12] = Vertex(12, [(0, 1, -1), (1, 0, -1), (1, 1, -2)], (13, 2, 11))
+    vertex_dict[13] = Vertex(13, [(0, 2, -2), (0, 1, -1), (1, 1, -2)], (14, 12, 35))
+    vertex_dict[14] = Vertex(14, [(-1, 2, -1), (0, 1, -1), (0, 2, -2)], (38, 15, 13))
 
-            current_vertex = Vertex(vertex_coords)
+    vertex_dict[15] = Vertex(15, [(-1, 2, -1), (-1, 1, 0), (0, 1, -1)], (16, 3, 14))
+    vertex_dict[16] = Vertex(16, [(-2, 2, 0), (-1, 1, 0), (-1, 2, -1)], (40, 17, 15))
+    vertex_dict[17] = Vertex(17, [(-2, 2, 0), (-2, 1, 1), (-1, 1, 0)], (43, 18, 16))
+    vertex_dict[18] = Vertex(18, [(-2, 1, 1), (-1, 0, 1), (-1, 1, 0)], (17, 19, 4))
+    vertex_dict[19] = Vertex(19, [(-2, 1, 1), (-2, 0, 2), (-1, 0, 1)], (45, 20, 18))
 
-            if current_vertex not in vertex_list or len(current_vertex.tile_coords) == 1:
-                vertex_list.append(current_vertex)
+    vertex_dict[20] = Vertex(20, [(-1, -1, 2), (-2, 0, 2), (-1, 0, 1)], (19, 48, 21))
+    vertex_dict[21] = Vertex(21, [(-1, -1, 2), (0, -1, 1), (-1, 0, 1)], (22, 20, 5))
+    vertex_dict[22] = Vertex(22, [(0, -2, 2), (-1, -1, 2), (0, -1, 1)], (50, 23, 21))
+    vertex_dict[23] = Vertex(23, [(0, -2, 2), (1, -2, 1), (0, -1, 1)], (53, 22, 6))
 
-    # ACCOUNT FOR PORTS VS WATER
-
-    return vertex_list
+    return vertex_dict
 
 
 def init_tiles(seed):
@@ -135,16 +137,19 @@ class Tile:
 
 
 class Vertex:
-    def __init__(self, tile_coords):
+    def __init__(self, vertex_id, tile_coords, neighbor_vertices):
+        self.vertex_id = vertex_id
         self.tile_coords = tile_coords
+        self.neighbor_vertices = neighbor_vertices
 
     def __str__(self):
-        tile_coords_str = ' || '.join(str(coord) for coord in self.tile_coords)
-        return f"Vertex:\n  Tile Coordinates: {tile_coords_str}\n"
+        tile_coords_str = ','.join(str(coord) for coord in self.tile_coords)
+        neighbor_vertex_str = ','.join(str(vertex) for vertex in self.neighbor_vertices)
+        return f"Vertex {self.vertex_id}:\n  Tile Coordinates: {tile_coords_str}\n  Neighboring Vertices: {neighbor_vertex_str}"
 
     def __eq__(self, other):
         if isinstance(other, Vertex):
-            return self.tile_coords == other.tile_coords
+            return self.tile_coords == other.tile_coords and self.vertex_id == other.vertex_id and self.neighbor_vertices == other.neighbor_vertices
         return False
 
 
@@ -160,7 +165,7 @@ class Board:
 
     def __init__(self, seed):
         self.tile_dict = init_tiles(seed)
-        self.vertex_list = init_vertices(seed)
+        self.vertex_dict = init_vertices(seed)
 
     def __str__(self):
         sorted_items = sorted(self.tile_dict.items(), key=lambda x: (x[0][1], x[0][0]))
@@ -172,7 +177,6 @@ class Board:
             for i in range(num_items):
                 small_string += " " + str(sorted_items[idx][1])
                 idx = idx + 1
-            big_string += small_string.center(40)
+            big_string += small_string.center(50)
             big_string += "\n"
         return big_string
-
