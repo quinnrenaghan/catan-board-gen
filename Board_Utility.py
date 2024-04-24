@@ -5,18 +5,6 @@ diag_directions = [(2, -1, -1), (1, -2, 1), (-1, -1, 2), (-2, 1, 1), (-1, 2, -1)
 directions = [(1, 0, -1), (1, -1, 0), (0, -1, 1), (-1, 0, 1), (-1, 1, 0), (0, 1, -1)]
 
 
-class Harbor(Enum):
-    BRICK = 2
-    ORE = 2
-    WOOD = 2
-    SHEEP = 2
-    WHEAT = 2
-    WILDCARD = 3
-
-    def __str__(self):
-        return self.name
-
-
 class Material(Enum):
     DESERT = "DESERT"
     BRICK = "BRICK"
@@ -27,6 +15,18 @@ class Material(Enum):
 
     def __str__(self):
         return self.value
+
+
+class Harbor(Enum):
+    BRICK = (2, Material.BRICK)
+    ORE = (2, Material.ORE)
+    WOOD = (2, Material.WOOD)
+    SHEEP = (2, Material.SHEEP)
+    WHEAT = (2, Material.WHEAT)
+    WILDCARD = (3, "wildcard")
+
+    def __str__(self):
+        return self.name
 
 
 class Number(Enum):
@@ -41,6 +41,9 @@ class Number(Enum):
     TEN = (10, 3)
     ELEVEN = (11, 2)
     TWELVE = (12, 1)
+
+    def __str__(self):
+        return self.name
 
 
 def coords_add(a, b):
@@ -72,6 +75,10 @@ def coord_length(coord):
 
 def distance(a, b):
     return coord_length(coords_sub(a, b))
+
+
+def valid_coord(coord):
+    return -2 <= coord[0] <= 2 and -2 <= coord[1] <= 2 and -2 <= coord[2] <= 2
 
 
 def init_vertices():
@@ -134,22 +141,27 @@ def init_vertices():
     vertex_dict[53] = Vertex(53, [(0, -2, 2), (1, -2, 1)], (52, 24, 23))
 
     edge_vertex_counter = 51
-    edge_pieces = [[0, 0, 1, 0]] * 3 + [[1, 0, 1]] * 3
-    ports = [Harbor.WILDCARD] * 4 + [Harbor.WHEAT] + [Harbor.BRICK] + [Harbor.ORE] + [Harbor.SHEEP] + [Harbor.WOOD]
+    edge_piece_single = [0, 0, 1, 0]
+    edge_piece_double = [1, 0, 1]
+    harbors = [Harbor.WILDCARD] * 4 + [Harbor.WHEAT] + [Harbor.BRICK] + [Harbor.ORE] + [Harbor.SHEEP] + [Harbor.WOOD]
     for piece_num in range(6):
-        piece = random.sample(edge_pieces, 1)[0]
-        edge_pieces.remove(piece)
+        if piece_num % 2 == 0:
+            piece = edge_piece_double
+        else:
+            piece = edge_piece_single
+
         for vertex in piece:
             if vertex == 1:
-                port = random.sample(ports, 1)[0]
-                ports.remove(port)
-                vertex_dict[edge_vertex_counter].tile_coords.append(port)
+                harbor = random.sample(harbors, 1)[0]
+                harbors.remove(harbor)
 
+                vertex_dict[edge_vertex_counter].tile_coords.append(harbor)
                 edge_vertex_counter += 1
+
                 if edge_vertex_counter == 54:
                     edge_vertex_counter = 24
 
-                vertex_dict[edge_vertex_counter].tile_coords.append(port)
+                vertex_dict[edge_vertex_counter].tile_coords.append(harbor)
                 edge_vertex_counter += 1
             else:
                 edge_vertex_counter += 1
@@ -231,12 +243,12 @@ class Board:
         sorted_items = sorted(self.tile_dict.items(), key=lambda x: (x[0][1], x[0][0]))
         pattern = [3, 4, 5, 4, 3]
         big_string = ""
-        idx = 0
+        tile = 0
         for num_items in pattern:
             small_string = ""
-            for i in range(num_items):
-                small_string += " " + str(sorted_items[idx][1])
-                idx = idx + 1
+            for item in range(num_items):
+                small_string += " " + str(sorted_items[tile][1])
+                tile = tile + 1
             big_string += small_string.center(50)
             big_string += "\n"
         return big_string
