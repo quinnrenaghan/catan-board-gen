@@ -156,3 +156,26 @@ def resource_distribution_helper(board, material, axis):
                 positive_total += 3
                 negative_total += 3
     return (positive_total - negative_total) * (positive_total - negative_total)
+
+
+def balance_score(board):
+    normalized_scores = list()
+
+    harbor_val = harbor_score(board)
+    number_clustering_val = number_clustering(board)
+    probability_distribution_val = probability_distribution(board)
+    resource_probability_val = resource_probability(board)
+    resource_clustering_val = resource_clustering(board)
+    resource_distribution_val = resource_distribution(board)
+
+    normalized_scores.append(harbor_val / 1000.00)
+    normalized_scores.append(number_clustering_val / 115.00)
+    normalized_scores.append(probability_distribution_val / 875.00)
+    normalized_scores.append(resource_probability_val / 155.00)
+    normalized_scores.append(resource_clustering_val / 40.00)
+    normalized_scores.append(resource_distribution_val / 4350.00)
+
+    return normalized_scores
+
+
+
