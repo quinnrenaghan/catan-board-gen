@@ -2,6 +2,23 @@ import Board_Utility as Util
 import numpy as np
 
 
+def get_board(minutes):
+    boards_per_second = 10000.00 / 5
+    seconds = minutes * 60
+    num_boards = int(boards_per_second * seconds)
+
+    best_board = Util.Board()
+    best_score = sum(balance_score(best_board))
+
+    for num in range(num_boards):
+        board = Util.Board()
+        score = sum(balance_score(board))
+        if score < best_score:
+            best_score = score
+            best_board = board
+    return best_board
+
+
 def harbor_score_helper(board, vertex):
     score = 0
     harbor_vertex = board.vertex_dict[vertex]
@@ -176,6 +193,3 @@ def balance_score(board):
     normalized_scores.append(resource_distribution_val / 4350.00)
 
     return normalized_scores
-
-
-
