@@ -1,6 +1,6 @@
 # Catan Board Generator
 
-This is a python script for generating fair and balanced catan game boards, for use in game. To use it, run the get board function found in the balanced_util file, and print the resulting board out. 
+This is a python script for generating fair and balanced catan game boards, for use in game. To use it, run the get_board function found in the balanced_util file, and print the resulting board out. Note: the more time you allow the generator to run, the more balanced/fair the resulting board will be.
 
 The board is characterized by a set of tiles, and a set of vertices, which should both be printed out in order to view the board. 
 
