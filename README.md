@@ -11,7 +11,9 @@ Before I go any further, I'll clarify the difference between balanced and fair, 
 * A **balanced** board is a board where the resources are distributed evenly across the board, and numbers are distributed evenly across both the board and the resources.
 * A **fair** board gives each player an equal chance to win, regardless of what order they play in. 
 
-To illustrate the difference, imagine a board on which the resources and numbers are spread evenly - this board is balanced. However, it happens that they are spread in such a way that there are no extremely strong starting settlement locations, and 6 medium strength locations. As a result, if you play this board with 4 people, and everyone plays optimally, there will be 2 people that have 2 medium strength starting locations, and 2 people that have 1 medium and 1 weak starting locations. This may seem like a small difference, but starting location in Catan can make or break your game. 
+To illustrate the difference, imagine a board on which the resources and numbers are spread evenly - this board is balanced. However, it happens that they are spread in such a way that there are no extremely strong starting settlement locations, and 6 medium strength locations. As a result, if you play this board with 4 people, and everyone plays optimally, there will be 2 people that have 2 medium strength starting locations, and 2 people that have 1 medium and 1 weak starting locations. So, this board is balanced, but not fair. 
+
+This may seem like a small difference, but starting location in Catan can make or break your game. 
 
 ### Process
 The board is characterized by a set of tiles, and a set of vertices.  
