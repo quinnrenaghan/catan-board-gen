@@ -30,7 +30,7 @@ Then, it evaluates the board on 7 different metrics:
 1. Distribution of resources across the board: Are the resources evenly split across the 3 axis?
 2. Resource clustering: Are there any clumps of the same resource type?
 3. Resource probability equality: Does each resource have an equal probability to roll?
-4. Distribution of numbers acorss the board: Are the numbers evenly split across the 3 axis?
+4. Distribution of numbers across the board: Are the numbers evenly split across the 3 axis?
 5. Number clustering: Are there any clumps of the same number?
 6. Harbor strength distribution: Are the harbors similar in strength?
 7. 4 Player Fairness: Assuming a pick order of 1 2 3 4 4 3 2 1 (snake draft), does each player get an equal strength starting civilization?
