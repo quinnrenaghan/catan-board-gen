@@ -26,7 +26,7 @@ The tiles are characterized by the coordinate system below, from the Red Blob Ga
 
 The vertices are characterized by their ID, the hexes they border (and ports), and the IDs of adjacent vertices. I assigned the IDs manually - they are loaded the first time you run the program. After establishing the game pieces, the generator completes the board by randomly assigning the resources, numbers, and ports. 
 
-Then, it evaluates the board on 7 different metrics:
+Then, it evaluates the board on 7 different metrics, corresponding to the following questions:
 1. Distribution of resources across the board: Are the resources evenly split across the 3 axis?
 2. Resource clustering: Are there any clumps of the same resource type?
 3. Resource probability equality: Does each resource have an equal probability to roll?
