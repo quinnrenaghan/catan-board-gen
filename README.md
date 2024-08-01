@@ -44,5 +44,5 @@ Here is one good board:
 
 ### Future Plans
 
-Going forward, I want to add a setting that accommodates for 3 player games. In addition, I hope to modify the fairness metric so that it takes nearby harbors, longest road, and largest army into account. Lastly, I want to improve the visual display of the board - so that the generator can be used by people unfamiliar with the backend. 
+Going forward, I want to modify the fairness metric so that it takes nearby harbors, longest road, and largest army into account. Also, I want to improve the visual display of the board - so that the generator can be used by people unfamiliar with the backend. 
 
