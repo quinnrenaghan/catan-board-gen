@@ -1,0 +1,26 @@
+.hexboard-container {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+}
+
+.number-circle {
+  fill: #ffffff;
+  stroke: rgba(0,0,0,0.15);
+  stroke-width: 1;
+}
+
+/* number text on top (black) */
+.number-text {
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  fill: #111;
+  font-weight: 700;
+  pointer-events: none;
+  paint-order: fill;
+}
+
+
+
+
