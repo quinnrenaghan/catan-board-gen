@@ -1,17 +1,21 @@
 import { useState } from "react";
 import "./App.css";
 import HexBoard from "./HexBoard.jsx";
-import Tippy from '@tippyjs/react'
+import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 
 
-async function fetchBoard() {
-  setLoading(true);
-  const res = await fetch("https://catan-board-gen.onrender.com/api/board");
-  const json = await res.json();
-  setBoard(json);
-  setLoading(false);
-}
+export default function App() {
+  const [board, setBoard] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  async function fetchBoard() {
+    setLoading(true);
+    const res = await fetch("https://catan-board-gen.onrender.com/api/board");
+    const json = await res.json();
+    setBoard(json);
+    setLoading(false);
+  }
 
   return (
     <div className="app">
