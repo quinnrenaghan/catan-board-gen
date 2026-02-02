@@ -5,16 +5,13 @@ import Tippy from '@tippyjs/react'
 import 'tippy.js/dist/tippy.css';
 
 
-export default function App() {
-  const [board, setBoard] = useState(null);
-  const [loading, setLoading] = useState(false);
-  async function fetchBoard() {
-    setLoading(true);
-    const res = await fetch("/api/board");
-    const json = await res.json();
-    setBoard(json);
-    setLoading(false);
-  }
+async function fetchBoard() {
+  setLoading(true);
+  const res = await fetch("https://catan-board-gen.onrender.com/api/board");
+  const json = await res.json();
+  setBoard(json);
+  setLoading(false);
+}
 
   return (
     <div className="app">
