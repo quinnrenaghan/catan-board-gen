@@ -1,3 +1,4 @@
 NumPy==1.26.4
 flask==3.0.3
 flask-cors==3.0.10
+gunicorn==21.2.0
