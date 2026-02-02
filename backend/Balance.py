@@ -122,6 +122,12 @@ def balance(board):
     return score
 
 def get_board():
-    board = Board()
-    balance_score = balance(board)
-    return board, balance_score 
+    best_board = None
+    best_score = float('inf')
+    for _ in range(500):
+        board = Board()
+        score = balance(board)
+        if score < best_score:
+            best_score = score
+            best_board = board
+    return best_board, best_score 

@@ -18,8 +18,11 @@ export default function App() {
 
   return (
     <div className="app">
-      <div className="center-card">
-        <h1>Catan Board Evaluator</h1>
+      <header className="app-header">
+        <h1>Catan Board Generator</h1>
+      </header>
+      <div className="center-card-wrapper">
+        <div className="center-card">
         <div style={{ marginTop: 12 }}>
           <button className="gen-button" onClick={fetchBoard} disabled={loading}>
             {loading ? "Fetching..." : (
@@ -51,11 +54,12 @@ export default function App() {
                 <span className="score-value">{Number(board.score).toFixed(3)}</span>
               </div>
             </div>
-            <div>
+            <div className="ocean-background">
               <HexBoard board={board} />
             </div>
           </>
         ) : null}
+        </div>
       </div>
     </div>
   );
