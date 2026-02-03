@@ -43,8 +43,3 @@ Here is one good board:
 
 <img width="430" alt="image" src="https://github.com/quinnrenaghan/catan-board-gen/assets/116096425/be184553-4c58-4ace-a6b1-ce77af879abd">
 
-
-### Future Plans
-
-Going forward, I want to modify the fairness metric so that it takes nearby harbors, longest road, and largest army into account. Also, I want to improve the visual display of the board - so that the generator can be used by people unfamiliar with the backend. 
-
