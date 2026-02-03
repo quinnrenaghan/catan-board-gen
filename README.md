@@ -1,5 +1,7 @@
 # Catan Board Generator
 
+https://quinnrenaghan.github.io/catan-board-gen/
+
 ### Overview
 This is a python script for generating fair and balanced catan game boards, in order to remove variance from the game. The user can run the program through associated github page, which will generate and grade boards with the push of a button, using a Flask API backend that is deployed using Render. 
 
