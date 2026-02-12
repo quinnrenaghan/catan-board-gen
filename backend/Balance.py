@@ -121,13 +121,17 @@ def balance(board):
     score += (harbor_score(board)) / MAX_HARBOR + number_clustering(board) / MAX_NUMBER_CLUSTERING + probability_distribution(board) / MAX_PROBABILITY_DISTRIBUTION + resource_probability(board) / MAX_RESOURCE_PROBABILITY + resource_clustering(board) / MAX_RESOURCE_CLUSTERING + resource_distribution(board) / MAX_RESOURCE_DISTRIBUTION
     return score
 
-def get_board():
+def get_board(threshold=None):
+    """Generate a board. If threshold is set, returns first board with score <= threshold (early exit).
+    Otherwise returns best of 500 iterations."""
     best_board = None
     best_score = float('inf')
-    for _ in range(500):
+    while True:
         board = Board()
         score = balance(board)
         if score < best_score:
             best_score = score
             best_board = board
-    return best_board, best_score 
+        if threshold is not None and score <= threshold:
+            return best_board, best_score
+    return best_board, best_score

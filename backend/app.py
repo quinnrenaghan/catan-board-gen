@@ -1,11 +1,11 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from Balance import get_board
 from Board import Harbor
 import os
 
 app = Flask(__name__)
-CORS(app, origins=["https://quinnrenaghan.github.io"])    
+CORS(app, origins=["https://quinnrenaghan.github.io", "http://localhost:5173", "http://localhost:3000"])    
 
 def serialize_board(board, score):
     tiles = {
@@ -28,7 +28,8 @@ def serialize_board(board, score):
 
 @app.route("/api/board")
 def api_board():
-    board, score = get_board()
+    threshold = request.args.get("threshold", type=float)
+    board, score = get_board(threshold=threshold)
     payload = serialize_board(board, score)
     return jsonify(payload)
 

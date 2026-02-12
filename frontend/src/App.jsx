@@ -1,17 +1,30 @@
 import { useState } from "react";
 import "./App.css";
 import HexBoard from "./HexBoard.jsx";
-import Tippy from '@tippyjs/react';
-import 'tippy.js/dist/tippy.css';
 
+const API_BASE = import.meta.env.DEV ? "" : "https://catan-board-gen.onrender.com";
+
+const BALANCE_MIN = 0.75;
+const BALANCE_MAX = 2;
+const DISPLAY_MIN = 0.25;
+const DISPLAY_MAX = 10;
+
+function toDisplayScore(rawBalance) {
+  const clamped = Math.max(BALANCE_MIN, Math.min(BALANCE_MAX, rawBalance));
+  return DISPLAY_MIN + ((BALANCE_MAX - clamped) / (BALANCE_MAX - BALANCE_MIN)) * (DISPLAY_MAX - DISPLAY_MIN);
+}
 
 export default function App() {
   const [board, setBoard] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [balanceStrength, setBalanceStrength] = useState(0.64);
+
+  const balanceThreshold = 2 - balanceStrength * (2 - 0.75);
 
   async function fetchBoard() {
     setLoading(true);
-    const res = await fetch("https://catan-board-gen.onrender.com/api/board");
+    const params = new URLSearchParams({ threshold: balanceThreshold });
+    const res = await fetch(`${API_BASE}/api/board?${params}`);
     const json = await res.json();
     setBoard(json);
     setLoading(false);
@@ -24,7 +37,26 @@ export default function App() {
       </header>
       <div className="center-card-wrapper">
         <div className="center-card">
-        <div style={{ marginTop: 12 }}>
+        <div className="controls">
+          <div className="slider-group">
+            <label htmlFor="balance-slider" className="slider-label">
+              Balance Preference
+            </label>
+            <input
+              id="balance-slider"
+              type="range"
+              min={0}
+              max={1}
+              step={0.05}
+              value={balanceStrength}
+              onChange={(e) => setBalanceStrength(Number(e.target.value))}
+              className="balance-slider"
+            />
+            <div className="slider-hints">
+              <span>Less balanced</span>
+              <span>Most balanced</span>
+            </div>
+          </div>
           <button className="gen-button" onClick={fetchBoard} disabled={loading}>
             {loading ? "Fetching..." : (
               <>
@@ -43,16 +75,8 @@ export default function App() {
               <div className="score-badge">
                 <div className="score-label">
                   Balance Score
-                    <Tippy content="The lower the score, the more balanced the board. Scores less than 1 are considered extremely balanced (~ 1 in every 100 boards)." placement="top" arrow={true}>
-                      <span className="info-icon" aria-hidden>
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true">
-                          <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.18)" strokeWidth="1.5" fill="transparent"/>
-                          <path d="M12 8h.01M11 12h2v4h-2z" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                      </span>
-                    </Tippy>
                 </div>
-                <span className="score-value">{Number(board.score).toFixed(3)}</span>
+                <span className="score-value">{toDisplayScore(board.score).toFixed(1)}</span>
               </div>
             </div>
             <div className="ocean-background">
