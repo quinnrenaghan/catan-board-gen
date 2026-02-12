@@ -17,17 +17,45 @@ function toDisplayScore(rawBalance) {
 export default function App() {
   const [board, setBoard] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [balanceStrength, setBalanceStrength] = useState(0.64);
 
   const balanceThreshold = 2 - balanceStrength * (2 - 0.75);
 
   async function fetchBoard() {
     setLoading(true);
-    const params = new URLSearchParams({ threshold: balanceThreshold });
-    const res = await fetch(`${API_BASE}/api/board?${params}`);
-    const json = await res.json();
-    setBoard(json);
-    setLoading(false);
+    setError(null);
+    try {
+      const params = new URLSearchParams({ threshold: balanceThreshold });
+      const res = await fetch(`${API_BASE}/api/board?${params}`);
+      if (!res.ok) {
+        if (res.status >= 500) {
+          throw new Error("Server unavailable. Please try again later.");
+        }
+        const text = await res.text();
+        let message = `Request failed (${res.status})`;
+        try {
+          const data = JSON.parse(text);
+          if (data.message) message = data.message;
+        } catch {
+          if (text) message = text.slice(0, 100);
+        }
+        throw new Error(message);
+      }
+      const json = await res.json();
+      if (!json.tiles || !json.harbors) {
+        throw new Error("Invalid response from server");
+      }
+      setBoard(json);
+    } catch (err) {
+      if (err instanceof TypeError && err.message === "Failed to fetch") {
+        setError("Network error. Check your connection and try again.");
+      } else {
+        setError(err instanceof Error ? err.message : "Failed to generate board");
+      }
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -68,6 +96,12 @@ export default function App() {
             )}
           </button>
         </div>
+
+        {error ? (
+          <div className="error-banner" role="alert">
+            {error}
+          </div>
+        ) : null}
 
         {board ? (
           <>
