@@ -3,7 +3,7 @@
 https://quinnrenaghan.github.io/catan-board-gen/
 
 ### Overview
-This is a python script for generating fair and balanced catan game boards, in order to remove variance from the game. The user can run the program through associated github page, which will generate and grade boards with the push of a button, using a Flask API backend that is deployed using Render. 
+This is a web app for generating fair and balanced catan game boards, in order to remove variance from the game. The user can run the program through associated github page, which will generate and grade boards with the push of a button, using a Flask API backend that is deployed using Render. 
 
 ### Background
 Settlers of Catan is a popular board game, where players build civilizations on a hexagonal playing board. The board consists of hexes, which each have a resource: brick, wheat, sheep, ore, wood, and desert, and a number: 2 through 12. There are also ports: trading outposts on the edge of the board. As a general rule, players aim to build their civilization adjacent to a variety of resources (but not desert), as well as numbers that have a high probability of being rolled with 2 dice (i.e. 6, 8). The board is different each game, and it being balanced and fair is crucial for a fun experience, especially for experienced players. 
@@ -39,7 +39,7 @@ Then, it evaluates the board on 7 different metrics, corresponding to the follow
 
 Finally, it normalizes each measure to a score from 0-1, and returns the most fair and balanced board (the lowest total score).
 
-Here is one good board:
+Here is one good board, the most balanced I have ever produced:
 
 <img width="430" alt="image" src="https://github.com/quinnrenaghan/catan-board-gen/assets/116096425/be184553-4c58-4ace-a6b1-ce77af879abd">
 
